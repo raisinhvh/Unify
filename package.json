@@ -1,0 +1,213 @@
+{
+  "name": "unify-cursor",
+  "displayName": "Unify",
+  "description": "Use Claude and ChatGPT subscriptions securely in Cursor.",
+  "version": "1.0.0",
+  "publisher": "unify-local",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.96.0"
+  },
+  "categories": [
+    "AI",
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "icon": "media/icon.png",
+  "contributes": {
+    "commands": [
+      {
+        "command": "unify.open",
+        "title": "Unify: Open"
+      },
+      {
+        "command": "unify.startTunnel",
+        "title": "Unify: Start Tunnel"
+      },
+      {
+        "command": "unify.stopTunnel",
+        "title": "Unify: Stop Tunnel"
+      },
+      {
+        "command": "unify.copyBaseUrl",
+        "title": "Unify: Copy Base URL"
+      }
+    ],
+    "configuration": {
+      "title": "Unify",
+      "properties": {
+        "unify.tunnelMode": {
+          "type": "string",
+          "enum": [
+            "manual",
+            "prompt",
+            "automatic"
+          ],
+          "enumDescriptions": [
+            "Only start from the dashboard.",
+            "Ask before starting when no tunnel is active.",
+            "Start without prompting when no tunnel is active."
+          ],
+          "default": "prompt",
+          "description": "How Unify starts its tunnel."
+        },
+        "unify.theme": {
+          "type": "string",
+          "enum": [
+            "default",
+            "dark",
+            "incognito",
+            "aquamint",
+            "sophisticated",
+            "violet",
+            "light"
+          ],
+          "default": "default",
+          "description": "Dashboard theme."
+        },
+        "unify.synapses": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the subtle animated synapse background."
+        },
+        "unify.cursorUrlMode": {
+          "type": "string",
+          "enum": [
+            "prompt",
+            "automatic"
+          ],
+          "enumDescriptions": [
+            "Ask before restarting Cursor to apply a new tunnel URL.",
+            "Restart Cursor without an Unify confirmation when a new tunnel URL is assigned."
+          ],
+          "default": "prompt",
+          "description": "How Unify applies new tunnel URLs to Cursor."
+        },
+        "unify.reasoning": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "xhigh",
+            "max"
+          ],
+          "default": "high",
+          "description": "Reasoning effort used for all routed models."
+        },
+        "unify.speed": {
+          "type": "string",
+          "enum": [
+            "standard",
+            "fast"
+          ],
+          "default": "standard",
+          "description": "Provider service speed used for all routed models."
+        },
+        "unify.localMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "Experimental: connect Cursor directly to Unify's loopback gateway without Cloudflare."
+        },
+        "unify.deepPrompt": {
+          "type": "boolean",
+          "default": false,
+          "description": "Experimental: draft each response with one model and validate it with another."
+        },
+        "unify.deepPromptValidator": {
+          "type": "string",
+          "default": "Sol",
+          "description": "Unify model name used for the Deep Prompt validation pass."
+        },
+        "unify.models": {
+          "type": "array",
+          "description": "Models exposed to Cursor.",
+          "default": [
+            {
+              "provider": "claude",
+              "frontend": "Sonnet 5",
+              "backend": "claude-sonnet-5",
+              "enabled": true
+            },
+            {
+              "provider": "claude",
+              "frontend": "Fable 5",
+              "backend": "claude-fable-5",
+              "enabled": true
+            },
+            {
+              "provider": "claude",
+              "frontend": "Opus 5",
+              "backend": "claude-opus-5",
+              "enabled": true
+            },
+            {
+              "provider": "chatgpt",
+              "frontend": "Sol",
+              "backend": "gpt-5.6-sol",
+              "enabled": true
+            },
+            {
+              "provider": "chatgpt",
+              "frontend": "Terra",
+              "backend": "gpt-5.6-terra",
+              "enabled": true
+            },
+            {
+              "provider": "chatgpt",
+              "frontend": "Luna",
+              "backend": "gpt-5.6-luna",
+              "enabled": true
+            }
+          ],
+          "items": {
+            "type": "object",
+            "required": [
+              "provider",
+              "frontend",
+              "backend",
+              "enabled"
+            ],
+            "properties": {
+              "provider": {
+                "type": "string",
+                "enum": [
+                  "claude",
+                  "chatgpt"
+                ]
+              },
+              "frontend": {
+                "type": "string",
+                "description": "Name sent to Cursor."
+              },
+              "backend": {
+                "type": "string",
+                "description": "Provider model ID."
+              },
+              "enabled": {
+                "type": "boolean",
+                "description": "Expose this model to Cursor."
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "node esbuild.mjs",
+    "check": "tsc --noEmit && vitest run && npm run build",
+    "package": "npm run check && vsce package --no-dependencies --allow-missing-repository -o dist/unify-1.0.0.vsix"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "@types/vscode": "^1.96.0",
+    "@vscode/vsce": "^3.6.2",
+    "esbuild": "^0.28.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
+  }
+}

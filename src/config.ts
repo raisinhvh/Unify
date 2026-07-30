@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 
 export type TunnelMode = "manual" | "prompt" | "automatic";
 export type CursorUrlMode = "prompt" | "automatic";
-export type Theme = "default" | "dark" | "incognito" | "aquamint" | "sophisticated" | "violet" | "light";
+export type Theme = "default" | "dark" | "incognito" | "aquamint" | "sophisticated" | "violet" | "honeycomb" | "skid" | "light";
 export type ModelProvider = "claude" | "chatgpt";
 export type ModelEffort = "low" | "medium" | "high" | "max" | "xhigh";
 export type ModelSpeed = "standard" | "fast";

@@ -57,8 +57,9 @@ export class UnifyController implements vscode.Disposable {
       (value) => this.log(value),
       undefined,
       (sample) => {
-        const provider = settings().models.find((model) => model.frontend === sample.model)?.provider ?? "chatgpt";
-        this.usage.record(sample, provider);
+        const currentSettings = settings();
+        const provider = currentSettings.models.find((model) => model.frontend === sample.model)?.provider ?? "chatgpt";
+        this.usage.record(sample, provider, currentSettings.reasoning, currentSettings.speed);
         void this.dashboard?.refresh();
       }
     );

@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.0
+## 1.0.1
 
 - Connect Claude and ChatGPT subscriptions through OAuth
 - Route supported models through an authenticated local gateway and Cloudflare Quick Tunnel

@@ -240,6 +240,47 @@ function html(webview: vscode.Webview): string {
       --activity-0: #271c36;
       --synapse: 169, 109, 255;
     }
+    html[data-theme="honeycomb"] {
+      color-scheme: light;
+      --bg: #fff4bd;
+      --bg-mid: #f8dc77;
+      --bg-end: #d9a441;
+      --surface: #fff9dc;
+      --strong: #f3df9b;
+      --raised: #dfbd69;
+      --menu: #70481f;
+      --menu-text: #fff8dc;
+      --text: #3f2b16;
+      --muted: #795c32;
+      --accent: #e6a817;
+      --accent-soft: #f4c84a;
+      --accent-text: #352307;
+      --good: #3f8550;
+      --warn: #a5680d;
+      --bad: #b74432;
+      --activity-0: #eadca9;
+      --synapse: 190, 129, 28;
+    }
+    html[data-theme="skid"] {
+      --bg: #010402;
+      --bg-mid: #061008;
+      --bg-end: #000201;
+      --surface: #07100a;
+      --strong: #0b1b10;
+      --raised: #12331b;
+      --menu: #020b04;
+      --menu-text: #b9ffbf;
+      --text: #caffce;
+      --muted: #72a879;
+      --accent: #25e13f;
+      --accent-soft: #64f276;
+      --accent-text: #001e05;
+      --good: #40ed65;
+      --warn: #c9d94a;
+      --bad: #ff5564;
+      --activity-0: #0a1c0e;
+      --synapse: 37, 225, 63;
+    }
     html[data-theme="light"] {
       color-scheme: light;
       --bg: #ece8e7;
@@ -632,7 +673,7 @@ function html(webview: vscode.Webview): string {
       <div class="panel settings-panel">
         <div class="setting">
           <h2>Theme</h2>
-          <select id="theme"><option value="default">Default</option><option value="dark">Carbon</option><option value="incognito">Incognito</option><option value="aquamint">Aquamint</option><option value="sophisticated">Sophisticated</option><option value="violet">Wock</option><option value="light">Light</option></select>
+          <select id="theme"><option value="default">Default</option><option value="dark">Carbon</option><option value="incognito">Incognito</option><option value="aquamint">Aquamint</option><option value="sophisticated">Sophisticated</option><option value="violet">Wock</option><option value="honeycomb">Honeycomb</option><option value="skid">Skid</option><option value="light">Light</option></select>
         </div>
         <div class="setting">
           <h2>Floating synapses</h2>
@@ -971,7 +1012,9 @@ function html(webview: vscode.Webview): string {
         row.className = "history-row";
         const model = document.createElement("span");
         model.className = "history-model";
-        model.textContent = item.model;
+        const effort = item.effort === "xhigh" ? "XHigh" : item.effort ? item.effort[0].toUpperCase() + item.effort.slice(1) : null;
+        const speed = item.speed ? item.speed[0].toUpperCase() + item.speed.slice(1) : null;
+        model.textContent = [item.model, effort, speed].filter(Boolean).join(" · ");
         const meta = document.createElement("span");
         meta.className = "history-meta";
         meta.textContent = (item.provider === "chatgpt" ? "OpenAI" : "Claude") + " · " + format.format(item.time);

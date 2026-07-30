@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import type { ModelProvider } from "./config";
+import type { ModelEffort, ModelProvider, ModelSpeed } from "./config";
 import type { UsageSample } from "./server";
 
 const KEY = "unify.usage.v1";
@@ -16,6 +16,8 @@ export interface UsagePoint extends UsageSample {
 export interface UsageEntry extends UsageSample {
   time: number;
   provider: ModelProvider;
+  effort?: ModelEffort;
+  speed?: ModelSpeed;
 }
 
 function isoDay(time = Date.now()): string {
@@ -50,13 +52,13 @@ export class UsageStore {
 
   constructor(private readonly state: vscode.Memento) {}
 
-  record(sample: UsageSample, provider: ModelProvider): void {
+  record(sample: UsageSample, provider: ModelProvider, effort?: ModelEffort, speed?: ModelSpeed): void {
     this.queue = this.queue.then(async () => {
       const points = this.state.get<UsagePoint[]>(KEY, []);
       const history = this.state.get<UsageEntry[]>(HISTORY_KEY, []);
       await this.state.update(KEY, mergeUsage(points, sample, provider));
       if (sample.prompts !== 0) {
-        await this.state.update(HISTORY_KEY, [{ ...sample, provider, time: Date.now() }, ...history].slice(0, HISTORY_LIMIT));
+        await this.state.update(HISTORY_KEY, [{ ...sample, provider, effort, speed, time: Date.now() }, ...history].slice(0, HISTORY_LIMIT));
       }
     });
   }

@@ -23,10 +23,10 @@ Unify is a Windows-first Cursor extension that connects Claude and ChatGPT subsc
 
 ## Install
 
-1. Install `dist/unify-1.0.0.vsix`:
+1. Install `dist/unify-1.0.1.vsix`:
 
    ```powershell
-   cursor --install-extension .\dist\unify-1.0.0.vsix
+   cursor --install-extension .\dist\unify-1.0.1.vsix
    ```
 
 2. Restart Cursor and open **Unify** from the status bar.
@@ -101,7 +101,7 @@ npm run check
 npm run package
 ```
 
-The packaged extension is written to `dist/unify-1.0.0.vsix`.
+The packaged extension is written to `dist/unify-1.0.1.vsix`.
 
 ## Use
 
